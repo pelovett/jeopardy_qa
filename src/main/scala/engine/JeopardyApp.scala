@@ -54,7 +54,7 @@ object JeopardyApp extends App {
 
   def loadQuestions(): ArrayBuffer[JeopardyQuestion] = {
     val results = new ArrayBuffer[JeopardyQuestion]()
-    val file_stream = new Scanner(new File(getClass.getResource("/questions.txt").getPath))
+    val file_stream = new Scanner(new File(System.getProperty("user.dir")+"/questions.txt"))
     while (file_stream.hasNextLine){
       val category = file_stream.nextLine
       val question = file_stream.nextLine
