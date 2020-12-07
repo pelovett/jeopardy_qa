@@ -8,7 +8,7 @@ import java.util.Scanner
 import scala.collection.mutable.ArrayBuffer
 
 object JeopardyApp extends App {
-  val index = new WikiIndex("/wiki_files/")
+  val index = new WikiIndex("/wiki_files/", "Stemmer")
   val questions = loadQuestions()
 
 

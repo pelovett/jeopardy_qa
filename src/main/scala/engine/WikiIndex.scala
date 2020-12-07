@@ -17,16 +17,18 @@ import org.apache.lucene.store.{Directory, FSDirectory, RAMDirectory}
 import java.nio.file.Paths
 import scala.collection.mutable.ArrayBuffer
 
-class WikiIndex (val file_path: String){
-  val analyzer = new StandardAnalyzer()
-  """
-  val analyzer = CustomAnalyzer.builder()
-    .withTokenizer("standard")
-    .addTokenFilter("lowercase")
-    .addTokenFilter("stop")
-    .addTokenFilter(classOf[SnowballPorterFilterFactory])
-    .build()
-  """
+class WikiIndex (val file_path: String, val analyzer_type: String){
+  var analyzer = if (analyzer_type == "Standard"){
+    new StandardAnalyzer()
+  } else {
+    CustomAnalyzer.builder()
+      .withTokenizer("standard")
+      .addTokenFilter("lowercase")
+      .addTokenFilter("stop")
+      .addTokenFilter(classOf[SnowballPorterFilterFactory])
+      .build()
+  }
+
   val directory = FSDirectory.open(Paths.get("index.lucene"))
   if (DirectoryReader.indexExists(directory) == false) {
     val index_writer_config = new IndexWriterConfig(analyzer)
