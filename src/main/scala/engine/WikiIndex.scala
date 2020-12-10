@@ -1,10 +1,11 @@
 package engine
 
+import org.apache.lucene.analysis.LowerCaseFilter
 import org.apache.lucene.analysis.core.{LowerCaseFilterFactory, StopFilterFactory}
 import org.apache.lucene.analysis.custom.CustomAnalyzer
 import org.apache.lucene.analysis.en.EnglishMinimalStemFilterFactory
 import org.apache.lucene.analysis.snowball.SnowballPorterFilterFactory
-import org.apache.lucene.analysis.standard.{StandardAnalyzer, StandardTokenizerFactory}
+import org.apache.lucene.analysis.standard.{StandardAnalyzer, StandardTokenizer, StandardTokenizerFactory}
 
 import java.io.File
 import org.apache.lucene.index.{DirectoryReader, IndexWriter, IndexWriterConfig}
@@ -19,7 +20,13 @@ import scala.collection.mutable.ArrayBuffer
 
 class WikiIndex (val file_path: String, val analyzer_type: String){
   var analyzer = if (analyzer_type == "Standard"){
-    new StandardAnalyzer()
+    CustomAnalyzer.builder()
+      .withTokenizer("standard")
+      .addTokenFilter("lowercase")
+      .addTokenFilter("stop")
+      .build()
+  } else if (analyzer_type == "Lemma"){
+    new LemmatizingAnalyzer()
   } else {
     CustomAnalyzer.builder()
       .withTokenizer("standard")
