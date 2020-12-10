@@ -1,6 +1,6 @@
 package engine
 
-import java.io.File
+import java.io.{File, FileWriter}
 import org.apache.lucene.document.{Document, Field, StringField, TextField}
 
 import java.util.Scanner

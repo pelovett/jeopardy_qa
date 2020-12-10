@@ -46,12 +46,14 @@ class WikiIndex (val file_path: String, val analyzer_type: String){
     val wiki_directory = new File(resource_path.getPath)
     if (wiki_directory.exists && wiki_directory.isDirectory) {
       for (wiki_file <- wiki_directory.listFiles.toList) {
+        print("Indexing: " + wiki_file.toString.split("/")(11))
+        val start_time = System.currentTimeMillis
         val parsed_docs = parser.parseRawWikiFile(wiki_file)
         for (doc <- parsed_docs) {
           index_writer.addDocument(doc)
         }
-        println("Indexing: " + wiki_file.toString.split("/")(11))
         index_writer.commit
+        print(" | "+(((System.currentTimeMillis - start_time) / 1000).toString)+" sec\n")
       }
     }
   }

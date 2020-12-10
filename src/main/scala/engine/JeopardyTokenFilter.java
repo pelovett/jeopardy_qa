@@ -28,7 +28,16 @@ public final class JeopardyTokenFilter extends TokenFilter {
         if (input.incrementToken()) {
             String buffer_contents = String.valueOf(
                     Arrays.copyOfRange(termAtt.buffer(),0, termAtt.length()));
-            List<String> buffer_sent = new Sentence(buffer_contents).lemmas();
+            if (buffer_contents.length() == 0){
+                return true;
+            }
+            List<String> buffer_sent;
+            try {
+                buffer_sent = new Sentence(buffer_contents).lemmas();
+            } catch (IllegalStateException ex){
+                System.out.println("Encountered that exception!");
+                return true;
+            }
             String output = "";
             for (String token : buffer_sent){
                 output += token + " ";

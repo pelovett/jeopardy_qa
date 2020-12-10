@@ -1,16 +1,17 @@
 package engine
 
+import edu.stanford.nlp.simple.Sentence
 import org.apache.lucene.analysis.util.TokenizerFactory
 import org.apache.lucene.search.similarities.ClassicSimilarity
 
 import java.io.File
+import java.lang.IllegalStateException
 import java.util.Scanner
 import scala.collection.mutable.ArrayBuffer
 
 object JeopardyApp extends App {
   val index = new WikiIndex("/wiki_files/", "Stemmer")
   val questions = loadQuestions()
-
 
   var bm25_correct_at_10 = 0d
   var bm25_correct_at_1 = 0d
